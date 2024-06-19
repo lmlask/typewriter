@@ -145,7 +145,7 @@ surfaces/0 = {
 "vertex_count": 64
 }
 
-[sub_resource type="ArrayMesh" id=10]
+[sub_resource type="ArrayMesh" id=12]
 resource_name = "Sketchfab_Scene_Object_10"
 surfaces/0 = {
 "aabb": AABB( -0.0261255, -0.00237887, -0.05, 0.052251, 0.221113, 0.10001 ),
@@ -353,7 +353,7 @@ transform = Transform( 0.14242, 0, 0.989806, 0, 1, 0, -0.989806, 0, 0.14242, -1.
 
 [node name="Object_24" type="MeshInstance" parent="root/GLTF_SceneRootNode/Menu001_10"]
 transform = Transform( 1, 2.22045e-16, 2.98023e-08, 1.09912e-14, 1, -1.77636e-15, -2.98023e-08, -8.88178e-16, 1, -0.00350455, -1.39698e-09, 0.205268 )
-mesh = SubResource( 10 )
+mesh = SubResource( 12 )
 
 [node name="Plate_11" type="Spatial" parent="root/GLTF_SceneRootNode"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.365473, 1.01189, -2.5386 )

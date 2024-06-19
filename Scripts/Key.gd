@@ -53,7 +53,7 @@ onready var mesh_map : Dictionary = {
 	"slash" : "slash"
 }
 
-var pose_tape_up = Transform(Vector3(1,0,0), Vector3(0,1.307,0), Vector3(0,0.988,0), Vector3(0,0,0))
+var pose_tape_up = Transform(Vector3(1,0,0), Vector3(0,1.5,0), Vector3(0,0.988,0), Vector3(0,0,0))
 var pose_tape_down = Transform(Vector3(1,0,0), Vector3(0,1,0), Vector3(0,0,1), Vector3(0,0,0))
 
 func _ready():
@@ -64,13 +64,13 @@ func _ready():
 func animate_press(key):
 	var mesh = get_node(mesh_map[key])
 	tween.interpolate_property(mesh, "translation:y", mesh.translation.y, depth_dict[mesh] - DEPTH, DURATION, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-	#owner.get_node("case/tape/skeleton").set_bone_custom_pose(0, pose_tape_up)
-	owner.get_node("case/riser").translation.y = 0.005
+	owner.get_node("case/tape/skeleton").set_bone_custom_pose(0, pose_tape_up)
+	owner.get_node("case/riser").translation.y = 0.02
 	tween.start()
 
 func animate_release(key):
 	var mesh = get_node(mesh_map[key])
-	#owner.get_node("case/tape/skeleton").set_bone_custom_pose(0, pose_tape_down)
+	owner.get_node("case/tape/skeleton").set_bone_custom_pose(0, pose_tape_down)
 	owner.get_node("case/riser").translation.y = 0.00
 	tween.interpolate_property(mesh, "translation:y", mesh.translation.y, depth_dict[mesh], DURATION*2, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 	tween.start()

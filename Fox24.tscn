@@ -1,4 +1,4 @@
-[gd_scene load_steps=98 format=2]
+[gd_scene load_steps=99 format=2]
 
 [ext_resource path="res://Scripts/Cart.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/InputHandler.gd" type="Script" id=2]
@@ -1282,6 +1282,10 @@ bind/0/name = "Bone"
 bind/0/bone = -1
 bind/0/pose = Transform( 17.168, 0, 0, 0, 17.168, 0, 0, 0, 17.168, 0.0813898, -4.9199, -2.66474 )
 
+[sub_resource type="SpatialMaterial" id=85]
+flags_unshaded = true
+albedo_color = Color( 0.721569, 0.721569, 0.721569, 1 )
+
 [node name="Fox24" type="Spatial"]
 script = ExtResource( 6 )
 min_cart_travel = -0.177
@@ -1648,3 +1652,4 @@ bones/0/bound_children = [  ]
 [node name="tape" type="MeshInstance" parent="case/tape/skeleton"]
 mesh = SubResource( 83 )
 skin = SubResource( 84 )
+material/0 = SubResource( 85 )

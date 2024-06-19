@@ -6,8 +6,6 @@ export (NodePath) var target
 
 export (float, 0.001, 0.1) var mouse_sensitivity = 0.005
 export (float, 0.001, 0.1) var mouse_smoothing = 0.005
-export (bool) var invert_y = false
-export (bool) var invert_x = false
 
 # zoom settings
 
@@ -54,6 +52,7 @@ func _ready():
 	default_transform = global_transform
 
 func _process(delta):
+	#Show crosshair only if is active camera
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current:
 		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer.visible = true
 	else:
@@ -99,18 +98,18 @@ func _input(event):
 			#camera movement
 			if Input.is_action_pressed("cam_move") and (mode == "pan"):
 				if event.relative.x != 0:
-					var dir = 1 if invert_x else -1
+					var dir = -1
 					target_offset_x = dir * -event.relative.x * default_sensivity * 0.1
 				if event.relative.y != 0:
-					var dir = 1 if invert_y else -1
+					var dir = -1
 					target_offset_y = dir * event.relative.y * default_sensivity * 0.1
 			else:
 				if event.relative.x != 0:
-					var dir = 1 if invert_x else -1
+					var dir = -1
 					$OuterGimbal.rotate_object_local(Vector3.UP, dir * event.relative.x * mouse_sensitivity)
 
 				if event.relative.y != 0:
-					var dir = 1 if invert_y else -1
+					var dir = -1
 					var y_rotation = clamp(event.relative.y, -30, 30)
 					$OuterGimbal/InnerGimbal.rotate_object_local(Vector3.RIGHT, dir * y_rotation * mouse_sensitivity)
 
