@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/FPCamera.gd" type="Script" id=1]
+
+[node name="FPCamera" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="OuterGimbal" type="Spatial" parent="."]
+
+[node name="InnerGimbal" type="Spatial" parent="OuterGimbal"]
+
+[node name="ClippedCamera" type="ClippedCamera" parent="OuterGimbal/InnerGimbal"]
+cull_mask = 7
+far = 3000.0
+process_mode = 1
+clip_to_bodies = false
+
+[node name="RoundPos" type="Spatial" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
+transform = Transform( -0.19304, 0.978721, -0.0695751, -0.98039, -0.195261, -0.0266131, -0.0396321, 0.0630734, 0.997221, 0.403, -0.256, -0.299 )
+
+[node name="RayCast" type="RayCast" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
+enabled = true
+cast_to = Vector3( 0, 0, -2 )
+collision_mask = 4
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="CrosshairContainer" type="CenterContainer" parent="OuterGimbal/InnerGimbal/ClippedCamera"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Indicator" type="TextureRect" parent="OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer"]
+visible = false
+modulate = Color( 1, 1, 1, 0.741176 )
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 512.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crosshair" type="TextureRect" parent="OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer"]
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 512.0
+margin_bottom = 300.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

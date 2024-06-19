@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/shift4.mp3-76e1087e35b045eb2fdfc21a1bcd01a5.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Typewriters/Portable/shift4.mp3"
+dest_files=[ "res://.import/shift4.mp3-76e1087e35b045eb2fdfc21a1bcd01a5.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

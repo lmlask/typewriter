@@ -1,0 +1,109 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Fox24.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Sheets/blank3.png" type="Texture" id=2]
+[ext_resource path="res://TextLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Cafe.tscn" type="PackedScene" id=4]
+[ext_resource path="res://FPCamera.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Gradient" id=7]
+interpolation_mode = 2
+colors = PoolColorArray( 1, 1, 1, 0.0745098, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Curve" id=10]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="ParticlesMaterial" id=2]
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+scale_curve = SubResource( 11 )
+color_ramp = SubResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=9]
+flags_transparent = true
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=4]
+material = SubResource( 9 )
+radius = 0.1
+height = 1.0
+radial_segments = 8
+rings = 8
+
+[node name="World" type="Spatial"]
+
+[node name="FPCamera" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01493, 0.822214 )
+max_movement = Vector2( 50, 50 )
+
+[node name="Typewriter" type="Spatial" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+
+[node name="Fox24" parent="Typewriter" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.56457e-09, -0.0477277, -0.0979673 )
+
+[node name="Keys" type="AudioStreamPlayer" parent="Typewriter"]
+volume_db = 11.62
+
+[node name="DirectionalLight" type="SpotLight" parent="."]
+transform = Transform( 0.985316, 0.0418267, 0.16554, 0, -0.969531, 0.244969, 0.170743, -0.241372, -0.955294, 0.70482, 2.20968, -4.88055 )
+light_color = Color( 1, 0.956863, 0.6, 1 )
+light_energy = 2.455
+light_indirect_energy = 2.947
+light_specular = 0.28
+shadow_enabled = true
+spot_range = 7.711
+spot_angle = 89.0
+
+[node name="DirectionalLight2" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00889611, 2.226, 1.45169 )
+light_color = Color( 1, 0.956863, 0.6, 1 )
+light_indirect_energy = 3.27
+light_specular = 0.28
+shadow_enabled = true
+omni_range = 10.868
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_top = -1.49854
+margin_right = 4000.0
+margin_bottom = 825.501
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 4000, 827 )
+transparent_bg = true
+handle_input_locally = false
+msaa = 1
+hdr = false
+usage = 0
+render_target_update_mode = 3
+gui_snap_controls_to_pixels = false
+
+[node name="sheet" type="Sprite" parent="Viewport"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Label" parent="Viewport" instance=ExtResource( 3 )]
+
+[node name="Cafe" parent="." instance=ExtResource( 4 )]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.490995, 0.0615672, -0.00318897 )
+amount = 5
+lifetime = 0.37
+speed_scale = 0.03
+fixed_fps = 20
+process_material = SubResource( 2 )
+draw_passes = 3
+draw_pass_1 = SubResource( 4 )
+draw_pass_2 = null
+draw_pass_3 = null

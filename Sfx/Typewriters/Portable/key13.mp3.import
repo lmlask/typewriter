@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/key13.mp3-eb941d3d160ce3fcfe1c42dc9b9ac67d.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Typewriters/Portable/key13.mp3"
+dest_files=[ "res://.import/key13.mp3-eb941d3d160ce3fcfe1c42dc9b9ac67d.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0
