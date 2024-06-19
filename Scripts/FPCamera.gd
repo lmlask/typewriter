@@ -2,12 +2,6 @@ extends Spatial
 
 export (NodePath) var target
 
-export (float, 0.0, 2.0) var rotation_speed = PI/2
-
-#role
-
-export (String) var role
-
 # mouse properties
 
 export (float, 0.001, 0.1) var mouse_sensitivity = 0.005
@@ -23,7 +17,7 @@ export (float, 0.05, 1.0) var zoom_speed = 0.09
 
 # movement properties
 
-export (Vector2) var max_movement
+export (Vector2) var max_movement = Vector2(0.6, 0.6)
 
 var zoom = 1
 var default_sensivity = mouse_sensitivity
@@ -53,9 +47,8 @@ var interact_areas = []
 var mode = "pan"
 onready var tween = owner.get_node("Tween")
 
-#port clamping
-var portmax = 165
-var portmin = 105
+#default camera position
+var default_camera = Vector3(0, 1.015, 0.822)
 
 func _ready():
 	default_transform = global_transform
@@ -71,10 +64,7 @@ func _process(delta):
 	#clamp rotation
 	if mode == "pan" or mode == "hatch":
 		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -1, 1.4)
-	elif mode == "port":
-		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -0.15, 0.2)
-		$OuterGimbal.rotation.y = clamp($OuterGimbal.rotation.y, deg2rad(portmin), deg2rad(portmax))
-	
+
 	#Apply zoom and sensivity
 	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = lerp(get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov, 70 * zoom, 4*delta)
 	mouse_sensitivity = default_sensivity * zoom * zoom
@@ -92,6 +82,9 @@ func _input(event):
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current:
 		if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
 			return
+			
+		if event.is_action_pressed("reset_camera"):
+			resetCamera()
 			
 		#Zoom input
 		if event.is_action_pressed("cam_zoom_in"):
@@ -111,7 +104,6 @@ func _input(event):
 				if event.relative.y != 0:
 					var dir = 1 if invert_y else -1
 					target_offset_y = dir * event.relative.y * default_sensivity * 0.1
-		
 			else:
 				if event.relative.x != 0:
 					var dir = 1 if invert_x else -1
@@ -143,26 +135,11 @@ func resetCamera(y_rot=0):
 	$OuterGimbal/InnerGimbal.rotation.x = 0
 	$OuterGimbal.rotation.y = deg2rad(y_rot)
 	rotation_degrees.y = 0
-	transform.origin = Vector3.ZERO
+	transform.origin = default_camera
 	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
-	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
+	#get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
 	zoom = 1
 	$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = true
-
-func togglePortMode(port, transZ, rotY, rotX, clampmin, clampmax):
-	if mode == "pan":
-		mode = "port"
-		target = port
-		$OuterGimbal/InnerGimbal/ClippedCamera.translate(Vector3(0, 0, transZ))
-		rotation_degrees.y = rotY
-		$OuterGimbal.rotation_degrees.y = 0
-		$OuterGimbal/InnerGimbal.rotation_degrees.x = rotX
-		true_offset = Vector2(0, 0)
-		portmin = clampmin
-		portmax = clampmax
-		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = false
-	elif mode == "port":
-		resetCamera()
 
 func tween_translation(pos, speed, easing):
 	tween.interpolate_property(self, "translation", translation, pos, speed, easing, Tween.EASE_IN_OUT)
