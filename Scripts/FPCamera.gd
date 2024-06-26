@@ -5,24 +5,27 @@ export (NodePath) var target
 # mouse properties
 
 export (float, 0.001, 0.1) var mouse_sensitivity = 0.005
-export (float, 0.001, 0.1) var mouse_smoothing = 0.005
-
-# zoom settings
-
+export (float, 0.001, 0.1) var mouse_smoothing = 0.15
 export (float) var max_zoom = 1.3
 export (float) var min_zoom = 0.3
 export (float, 0.05, 1.0) var zoom_speed = 0.09
+
+# focus mode
+
+export (Vector2) var focused_camera_rotation = Vector2(-0.011,-0.22)
+export (Vector3) var focused_camera_location = Vector3(0, 0.491,0.668)
+export (float) var reset_duration = 1.2
 
 # movement properties
 
 export (Vector2) var max_movement = Vector2(0.6, 0.6)
 
+
 var zoom = 1
-var default_sensivity = mouse_sensitivity
 var default_transform
-var target_offset_x = 0
-var target_offset_y = 0
+var target_offset = Vector2(0,0)
 var true_offset = Vector2(0, 0)
+var target_rotation = Vector2(0,0)
 
 #crosshair
 onready var hand_img = preload("res://Textures/Icons/hand.png")
@@ -36,122 +39,116 @@ onready var crosshairs = {
 	"dot" : dot_img
 }
 
+#camera
+onready var camera = $OuterGimbal/InnerGimbal/ClippedCamera
+
 #raycast
 onready var ray = $OuterGimbal/InnerGimbal/ClippedCamera/RayCast
+onready var music_change_area = owner.get_node("MusicChangeArea")
 var aimedObject = null
-var interact_areas = []
+var interact_areas = [music_change_area]
 
 #modes
-var mode = "pan"
 onready var tween = owner.get_node("Tween")
 
 #default camera position
 var default_camera = Vector3(0, 1.015, 0.822)
+
 
 func _ready():
 	default_transform = global_transform
 
 func _process(delta):
 	#Show crosshair only if is active camera
-	if $OuterGimbal/InnerGimbal/ClippedCamera.current:
+	if camera.current:
 		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer.visible = true
 	else:
 		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer.visible = false
 	
-	applyOffset(target_offset_x, target_offset_y)
+	#clamp rotation and target rotation
+	$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -1, 1.4)
+	target_rotation.y = clamp(target_rotation.y, -1, 1.4)
 	
-	#clamp rotation
-	if mode == "pan" or mode == "hatch":
-		$OuterGimbal/InnerGimbal.rotation.x = clamp($OuterGimbal/InnerGimbal.rotation.x, -1, 1.4)
-
+	#apply rotation
+	$OuterGimbal.rotation.y = lerp($OuterGimbal.rotation.y, target_rotation.x, delta/mouse_smoothing)
+	$OuterGimbal/InnerGimbal.rotation.x = lerp($OuterGimbal/InnerGimbal.rotation.x, target_rotation.y, delta/mouse_smoothing)
+	
+	#Apply offset
+	applyOffset(target_offset)
+	target_offset=Vector2(0,0)
+	
 	#Apply zoom and sensivity
-	get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = lerp(get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov, 70 * zoom, 4*delta)
-	mouse_sensitivity = default_sensivity * zoom * zoom
-
-	#set target for portmode:
-	if target:
-		global_transform.origin = target.global_transform.origin
-		
+	camera.fov = lerp(camera.fov, 70 * zoom, delta/mouse_smoothing)
 	lookatHandler()
 
-func set_current():
-	get_node("OuterGimbal/InnerGimbal/ClippedCamera").current = true
-
 func _input(event):
+	# Mouse stuff.
+	if event.is_action_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	if event.is_action_pressed("click"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current:
+		#Capture/release mouse
 		if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
 			return
-			
+		#Camera reset
 		if event.is_action_pressed("reset_camera"):
-			resetCamera()
-			
+			resetCamera(focused_camera_rotation)
 		#Zoom input
 		if event.is_action_pressed("cam_zoom_in"):
 			zoom -= zoom_speed
 		if event.is_action_pressed("cam_zoom_out"):
 			zoom += zoom_speed
-			
 		#Zoom clamping
 		zoom = clamp(zoom, min_zoom, max_zoom)
 			
 		if event is InputEventMouseMotion:
 			#camera movement
-			if Input.is_action_pressed("cam_move") and (mode == "pan"):
+			if Input.is_action_pressed("cam_move"):
 				if event.relative.x != 0:
 					var dir = -1
-					target_offset_x = dir * -event.relative.x * default_sensivity * 0.1
+					target_offset.x = dir * -event.relative.x * mouse_sensitivity * 0.1
 				if event.relative.y != 0:
 					var dir = -1
-					target_offset_y = dir * event.relative.y * default_sensivity * 0.1
+					target_offset.y = dir * event.relative.y * mouse_sensitivity * 0.1
+			#camera rotation
 			else:
 				if event.relative.x != 0:
 					var dir = -1
-					$OuterGimbal.rotate_object_local(Vector3.UP, dir * event.relative.x * mouse_sensitivity)
+					target_rotation.x = target_rotation.x + (dir*event.relative.x*mouse_sensitivity)
 
 				if event.relative.y != 0:
 					var dir = -1
-					var y_rotation = clamp(event.relative.y, -30, 30)
-					$OuterGimbal/InnerGimbal.rotate_object_local(Vector3.RIGHT, dir * y_rotation * mouse_sensitivity)
+					target_rotation.y = target_rotation.y + (dir*event.relative.y*mouse_sensitivity)
 
-func applyOffset(x, y):
-	if mode == "pan":
-		if (true_offset.x + x) >= max_movement.x or (true_offset.x + x) <= -max_movement.x:
-			x = 0
-		if (true_offset.y + y) >= max_movement.y or (true_offset.y + y) <= -max_movement.y:
-			y = 0
-		#translate camera
-		translate(Vector3(x, y, 0))
-		#update offset amount
-		true_offset = Vector2(true_offset.x + x, true_offset.y + y)
-		#reset target offset
-		target_offset_x = 0
-		target_offset_y = 0
+func applyOffset(target_offset):
+	if (true_offset.x + target_offset.x) >= max_movement.x or (true_offset.x + target_offset.x) <= -max_movement.x:
+		target_offset.x = 0
+	if (true_offset.y + target_offset.y) >= max_movement.y or (true_offset.y + target_offset.y) <= -max_movement.y:
+		target_offset.y = 0
+	#translate camera
+	translate(Vector3(target_offset.x, target_offset.y, 0))
+	#update offset amount
+	true_offset = Vector2(true_offset.x + target_offset.x, true_offset.y + target_offset.y)
+	#reset target offset
+	target_offset = Vector2(0,0)
+	print(true_offset)
 
-func resetCamera(y_rot=0):
+func resetCamera(camera_rotation):
 	true_offset = Vector2(0, 0)
 	target = null
-	mode = "pan" 
-	$OuterGimbal/InnerGimbal.rotation.x = 0
-	$OuterGimbal.rotation.y = deg2rad(y_rot)
-	rotation_degrees.y = 0
-	transform.origin = default_camera
-	$OuterGimbal/InnerGimbal/ClippedCamera.translation.z = 0
-	#get_node("OuterGimbal/InnerGimbal/ClippedCamera").fov = 70
-	zoom = 1
-	$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = true
-
-func tween_translation(pos, speed, easing):
-	tween.interpolate_property(self, "translation", translation, pos, speed, easing, Tween.EASE_IN_OUT)
+	target_rotation = focused_camera_rotation
+	tween.interpolate_property(self, "zoom", zoom, 0.55, reset_duration, Tween.TRANS_CUBIC, Tween.EASE_IN_OUT)
+	tween.interpolate_property(self, "translation", translation, focused_camera_location, reset_duration, Tween.TRANS_CUBIC,Tween.EASE_IN_OUT)
 	tween.start()
-	true_offset = Vector2(0, 0)
+	#translation = focused_camera_location
+	$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.visible = true
 
 func lookatHandler():
 	if $OuterGimbal/InnerGimbal/ClippedCamera.current and interact_areas.has(ray.get_collider()):
 		aimedObject = ray.get_collider()
-		if aimedObject.name.substr(0, 3) == "Bin":
-			$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = aimedObject.get_crosshair_tex()
-		else:
-			$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = crosshairs[aimedObject.indicator]
+		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = crosshairs[aimedObject.indicator]
 	else:
 		aimedObject = null
 		$OuterGimbal/InnerGimbal/ClippedCamera/CrosshairContainer/Crosshair.texture = dot_img

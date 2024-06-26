@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/fesliyanstudios_fallen_petals.mp3-c144118b74a5b7e5f0392d188b1bb435.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/fesliyanstudios_fallen_petals.mp3"
+dest_files=[ "res://.import/fesliyanstudios_fallen_petals.mp3-c144118b74a5b7e5f0392d188b1bb435.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

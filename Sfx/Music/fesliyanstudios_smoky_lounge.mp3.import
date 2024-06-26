@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/fesliyanstudios_smoky_lounge.mp3-d8deb60df5065145b13eae0f4964ab7c.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/fesliyanstudios_smoky_lounge.mp3"
+dest_files=[ "res://.import/fesliyanstudios_smoky_lounge.mp3-d8deb60df5065145b13eae0f4964ab7c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

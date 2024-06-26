@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/flsliyanstudios_sleek_panther.mp3-ddc20138821a2c002a496fb225759017.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/flsliyanstudios_sleek_panther.mp3"
+dest_files=[ "res://.import/flsliyanstudios_sleek_panther.mp3-ddc20138821a2c002a496fb225759017.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

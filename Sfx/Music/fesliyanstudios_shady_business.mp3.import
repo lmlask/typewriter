@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/fesliyanstudios_shady_business.mp3-3a7f0747fed8c57d53df9adceeb4506b.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/fesliyanstudios_shady_business.mp3"
+dest_files=[ "res://.import/fesliyanstudios_shady_business.mp3-3a7f0747fed8c57d53df9adceeb4506b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

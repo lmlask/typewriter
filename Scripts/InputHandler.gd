@@ -30,13 +30,6 @@ func _input(event):
 #shift key
 	if event.is_action("shift"):
 		shifted = !shifted
-		
-	# Mouse stuff.
-	if event.is_action_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	if event.is_action_pressed("click"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		
 
 #handles all keys that print things
 	for i in input_map.keys():

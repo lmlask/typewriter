@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/fesliyanstudios_alley_thoughts.mp3-fd1236eedc13c01edf851369df4192fa.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/fesliyanstudios_alley_thoughts.mp3"
+dest_files=[ "res://.import/fesliyanstudios_alley_thoughts.mp3-fd1236eedc13c01edf851369df4192fa.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

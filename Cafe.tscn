@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Cafe/source/anime_cafe (1)/Items_baked.material" type="Material" id=1]
 [ext_resource path="res://Cafe/source/anime_cafe (1)/FoliageNoSpecular.material" type="Material" id=2]
@@ -8,22 +8,6 @@
 [ext_resource path="res://Cafe/source/anime_cafe (1)/Items_emission_001.material" type="Material" id=6]
 [ext_resource path="res://Cafe/source/anime_cafe (1)/Desserts.material" type="Material" id=7]
 [ext_resource path="res://Cafe/source/anime_cafe (1)/Items_specular.material" type="Material" id=8]
-[ext_resource path="res://Cafe/source/anime_cafe (1)/chara.material" type="Material" id=9]
-
-[sub_resource type="ArrayMesh" id=1]
-resource_name = "Sketchfab_Scene_Object_0"
-surfaces/0 = {
-"aabb": AABB( -0.36645, 0, -0.5, 0.732899, 1e-05, 1.00001 ),
-"array_data": PoolByteArray( 69, 159, 187, 190, 0, 0, 0, 0, 0, 0, 0, 63, 0, 127, 127, 63, 0, 0, 0, 60, 69, 159, 187, 62, 0, 0, 0, 0, 0, 0, 0, 63, 0, 127, 127, 63, 0, 60, 0, 60, 69, 159, 187, 190, 0, 0, 0, 0, 0, 0, 0, 191, 0, 127, 127, 63, 0, 0, 0, 0, 69, 159, 187, 62, 0, 0, 0, 0, 0, 0, 0, 191, 0, 127, 127, 63, 0, 60, 0, 0 ),
-"array_index_data": PoolByteArray( 0, 0, 3, 0, 1, 0, 0, 0, 2, 0, 3, 0 ),
-"blend_shape_data": [  ],
-"format": 2194711,
-"index_count": 6,
-"material": ExtResource( 9 ),
-"primitive": 4,
-"skeleton_aabb": [  ],
-"vertex_count": 4
-}
 
 [sub_resource type="ArrayMesh" id=2]
 resource_name = "Sketchfab_Scene_Object_1"
@@ -287,13 +271,6 @@ transform = Transform( 0.183923, -1.69002, -7.38732e-08, 0, -7.43094e-08, 1.7, -
 
 [node name="GLTF_SceneRootNode" type="Spatial" parent="root"]
 transform = Transform( 1, 0, 0, 0, 2.22045e-16, -1, 0, 1, 2.22045e-16, 0, 0, 0 )
-
-[node name="chara_0" type="Spatial" parent="root/GLTF_SceneRootNode"]
-transform = Transform( 1.26595, 1.21118, 0, 0, 0, -1.75202, -1.21118, 1.26595, 0, -2.53072, 1.03417, -2.24037 )
-
-[node name="Object_4" type="MeshInstance" parent="root/GLTF_SceneRootNode/chara_0"]
-visible = false
-mesh = SubResource( 1 )
 
 [node name="Teapot_1" type="Spatial" parent="root/GLTF_SceneRootNode"]
 transform = Transform( -0.952355, 0, -0.304991, 0, 1, 0, 0.304991, 0, -0.952355, 1.11091, 0.734639, -0.676304 )

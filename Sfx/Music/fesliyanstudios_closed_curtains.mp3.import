@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/fesliyanstudios_closed_curtains.mp3-bdec7eb76a3b635e323542149cabebda.mp3str"
+
+[deps]
+
+source_file="res://Sfx/Music/fesliyanstudios_closed_curtains.mp3"
+dest_files=[ "res://.import/fesliyanstudios_closed_curtains.mp3-bdec7eb76a3b635e323542149cabebda.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

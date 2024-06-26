@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Fox24.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Sheets/blank3.png" type="Texture" id=2]
@@ -7,6 +7,34 @@
 [ext_resource path="res://menu.png" type="Texture" id=5]
 [ext_resource path="res://FPCamera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://new_planemesh.tres" type="PlaneMesh" id=7]
+[ext_resource path="res://MusicChangeArea.gd" type="Script" id=8]
+[ext_resource path="res://Sfx/Music/fesliyanstudios_alley_thoughts.mp3" type="AudioStream" id=9]
+
+[sub_resource type="PanoramaSky" id=16]
+
+[sub_resource type="Environment" id=15]
+background_mode = 3
+background_sky = SubResource( 16 )
+background_color = Color( 1, 0.996078, 0.623529, 1 )
+background_energy = 0.69
+ambient_light_color = Color( 1, 0.996078, 0.623529, 1 )
+ambient_light_energy = 0.72
+ambient_light_sky_contribution = 0.75
+dof_blur_far_distance = 0.01
+dof_blur_far_transition = 3.0
+glow_enabled = true
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_levels/6 = true
+glow_levels/7 = true
+glow_intensity = 0.3
+glow_bloom = 0.02
+glow_blend_mode = 0
+glow_hdr_threshold = 0.87
+glow_hdr_luminance_cap = 0.58
+glow_hdr_scale = 1.05
+glow_high_quality = true
 
 [sub_resource type="Gradient" id=7]
 interpolation_mode = 2
@@ -43,10 +71,31 @@ rings = 8
 [sub_resource type="SpatialMaterial" id=12]
 albedo_texture = ExtResource( 5 )
 
+[sub_resource type="CapsuleMesh" id=13]
+radius = 0.5
+
+[sub_resource type="SpatialMaterial" id=14]
+albedo_color = Color( 1, 0.972549, 0.372549, 1 )
+emission_enabled = true
+emission = Color( 1, 0.909804, 0.431373, 1 )
+emission_energy = 5.0
+emission_operator = 0
+emission_on_uv2 = false
+
+[sub_resource type="BoxShape" id=17]
+extents = Vector3( 0.828341, 1.94768, 1.73137 )
+
 [node name="World" type="Spatial"]
 
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+autoplay = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 15 )
+
 [node name="FPCamera" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.833463, 0.822214 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.490637, 0.667842 )
 
 [node name="Typewriter" type="Spatial" parent="."]
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
@@ -54,25 +103,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0
 [node name="Fox24" parent="Typewriter" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.56457e-09, -0.0477277, -0.0979673 )
 
-[node name="Keys" type="AudioStreamPlayer" parent="Typewriter"]
-volume_db = 11.62
-
-[node name="DirectionalLight" type="SpotLight" parent="."]
-transform = Transform( 0.985316, 0.0418267, 0.16554, 0, -0.969531, 0.244969, 0.170743, -0.241372, -0.955294, 0.70482, 2.20968, -4.88055 )
-light_color = Color( 1, 0.956863, 0.6, 1 )
-light_energy = 2.455
-light_indirect_energy = 2.947
-shadow_enabled = true
-spot_range = 7.711
-spot_angle = 89.0
-
-[node name="DirectionalLight2" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00889611, 2.226, 1.45169 )
-light_color = Color( 1, 0.956863, 0.6, 1 )
-light_indirect_energy = 3.27
-light_specular = 0.28
-shadow_enabled = true
-omni_range = 10.868
+[node name="Keys" type="AudioStreamPlayer3D" parent="Typewriter"]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
 margin_top = -1.49854
@@ -111,7 +142,71 @@ draw_pass_1 = SubResource( 4 )
 draw_pass_2 = null
 draw_pass_3 = null
 
-[node name="Object_24" type="MeshInstance" parent="."]
+[node name="Menu" type="MeshInstance" parent="."]
 transform = Transform( 0.836913, 0.496063, 0.295136, 0.00451033, 0.416323, -1.16015, -0.547318, 0.761969, 0.441737, -0.345954, 0.0942954, 0.0479604 )
 mesh = ExtResource( 7 )
 material/0 = SubResource( 12 )
+
+[node name="Light2" type="OmniLight" parent="."]
+transform = Transform( -0.976639, -0.214889, -9.47735e-08, -8.74228e-08, -4.37114e-08, 1, -0.214889, 0.976639, 2.3904e-08, -0.00428605, 2.12877, 1.46621 )
+visible = false
+light_color = Color( 1, 0.886275, 0.360784, 1 )
+light_energy = 0.2
+shadow_enabled = true
+omni_range = 14.0
+omni_attenuation = 0.707105
+
+[node name="Bulb1" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -3.16786, 2.29953, 0.798889 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="Light1" type="OmniLight" parent="Bulb1"]
+transform = Transform( -9.99999, 2.38419e-07, -8.74228e-07, 2.38419e-07, 9.99999, 2.27374e-13, 8.74228e-07, 8.52651e-14, -10, -0.130024, 0.0904264, 1.7076 )
+light_color = Color( 1, 0.886275, 0.360784, 1 )
+shadow_enabled = true
+omni_range = 14.0
+omni_attenuation = 0.707105
+omni_shadow_detail = 0
+
+[node name="Bulb2" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -3.0589, 2.29953, -0.340456 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="Bulb3" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -2.93401, 2.29953, -1.47552 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="Bulb4" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -4.35722, 2.29953, -3.23575 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="Bulb5" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -4.21868, 2.29953, -4.37588 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="Bulb6" type="MeshInstance" parent="."]
+transform = Transform( 0.0976639, -0.0214889, 9.39309e-10, 0, -4.37114e-09, -0.1, 0.0214889, 0.0976639, -4.26902e-09, -4.09377, 2.29953, -5.48139 )
+use_in_baked_light = true
+mesh = SubResource( 13 )
+material/0 = SubResource( 14 )
+
+[node name="BakedLightmap" type="BakedLightmap" parent="."]
+visible = false
+
+[node name="MusicChangeArea" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.181, 0.478856, 0.301956 )
+script = ExtResource( 8 )
+
+[node name="CollisionShape" type="CollisionShape" parent="MusicChangeArea"]
+transform = Transform( 0.985064, 0, -0.172187, 0, 1, 0, 0.172187, 0, 0.985064, -0.356433, 0.316166, 0.561804 )
+shape = SubResource( 17 )
