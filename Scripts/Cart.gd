@@ -31,6 +31,6 @@ func _ready():
 
 func _process(delta):
 	pass
-#	sheet.mesh.surface_get_material(0).uv1_offset.x -= 0.01 * delta *4
-#	get_node("cart/roll").rotation_degrees.x += 15 * delta * 4
+	sheet.mesh.surface_get_material(0).uv1_offset.x -= 0.01 * delta *4
+	get_node("cart/roll").rotation_degrees.x += 15 * delta * 4
 		

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Fox24.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Sheets/blank3.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://new_planemesh.tres" type="PlaneMesh" id=7]
 [ext_resource path="res://MusicChangeArea.gd" type="Script" id=8]
 [ext_resource path="res://Sfx/Music/fesliyanstudios_alley_thoughts.mp3" type="AudioStream" id=9]
+[ext_resource path="res://InputHandler.gd" type="Script" id=10]
 
 [sub_resource type="PanoramaSky" id=16]
 
@@ -34,7 +35,6 @@ glow_blend_mode = 0
 glow_hdr_threshold = 0.87
 glow_hdr_luminance_cap = 0.58
 glow_hdr_scale = 1.05
-glow_high_quality = true
 
 [sub_resource type="Gradient" id=7]
 interpolation_mode = 2
@@ -87,6 +87,9 @@ extents = Vector3( 0.828341, 1.94768, 1.73137 )
 
 [node name="World" type="Spatial"]
 
+[node name="InputHandler" type="Node" parent="."]
+script = ExtResource( 10 )
+
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
 autoplay = true
@@ -132,6 +135,7 @@ centered = false
 
 [node name="Particles" type="Particles" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.490995, 0.0615672, -0.00318897 )
+visible = false
 amount = 5
 lifetime = 0.37
 speed_scale = 0.03
@@ -149,7 +153,6 @@ material/0 = SubResource( 12 )
 
 [node name="Light2" type="OmniLight" parent="."]
 transform = Transform( -0.976639, -0.214889, -9.47735e-08, -8.74228e-08, -4.37114e-08, 1, -0.214889, 0.976639, 2.3904e-08, -0.00428605, 2.12877, 1.46621 )
-visible = false
 light_color = Color( 1, 0.886275, 0.360784, 1 )
 light_energy = 0.2
 shadow_enabled = true
